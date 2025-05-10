@@ -15,21 +15,18 @@
     </div>
 
     <div class="controls">
-      <input type="text" id="new-url" placeholder="URLを入力...">
-      <button onclick="addShortcut()">追加</button>
+      <input id="new-url" type="text" placeholder="URLを入力">
+      <input id="new-title" type="text" placeholder="タイトル（任意）">
+      <button onclick="addShortcut()">追加</button>      
       <br />
       <button onclick="clearShortcuts()">クリア</button>
-      <button onclick="exportShortcuts()">⬇️ エクスポート</button>
+      <button onclick="exportShortcuts()">エクスポート</button>
       <input type="file" id="import-file" accept=".json" onchange="importShortcuts(this)">
     </div>
 
-    <h2>📌 ショートカット一覧</h2>
+    <h2>ショートカット一覧</h2>
     <div id="shortcuts" class="shortcut-list"></div>
   </div>
-
-  <!-- 非表示iframeでタイトル取得用 -->
-  <iframe id="title-fetcher" style="display:none;"></iframe>
-
   <script src="script.js"></script>
 </body>
 

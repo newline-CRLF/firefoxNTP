@@ -15,47 +15,42 @@ request.onupgradeneeded = (event) => {
 };
 
 // タイトル取得用iframe
-const iframe = document.getElementById("title-fetcher");
+//const iframe = document.getElementById("title-fetcher");
 
 function addShortcut() {
-  const url = document.getElementById("new-url").value;
-  if (!url) return;
-
-  const hostname = new URL(url).hostname;
-
-  // ① favicon取得（キャッシュ確認）
-  let favicon = localStorage.getItem(`favicon:${hostname}`);
-  if (!favicon) {
-    favicon = `https://www.google.com/s2/favicons?sz=64&domain=${hostname}`;
-    fetch(favicon)
-      .then(res => res.blob())
-      .then(blob => {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          localStorage.setItem(`favicon:${hostname}`, reader.result);
-        };
-        reader.readAsDataURL(blob);
-      });
-  }
-
-  // ② iframeでタイトル取得
-  iframe.src = url;
-  iframe.onload = () => {
-    try {
-      const title = iframe.contentDocument.title || url;
-      const transaction = db.transaction([storeName], "readwrite");
-      const store = transaction.objectStore(storeName);
-      store.add({ url, title, favicon });
-      transaction.oncomplete = () => renderShortcuts();
-    } catch (e) {
-      alert("タイトル取得に失敗しました（CORS）");
-      const transaction = db.transaction([storeName], "readwrite");
-      const store = transaction.objectStore(storeName);
-      store.add({ url, title: url, favicon });
-      transaction.oncomplete = () => renderShortcuts();
+    const url = document.getElementById("new-url").value.trim();
+    const title = document.getElementById("new-title").value.trim();
+  
+    if (!url) return alert("URLを入力してね");
+  
+    const hostname = new URL(url).hostname;
+  
+    // favicon 取得（キャッシュあり）
+    let favicon = localStorage.getItem(`favicon:${hostname}`);
+    if (!favicon) {
+      favicon = `https://www.google.com/s2/favicons?sz=64&domain=${hostname}`;
+      fetch(favicon)
+        .then(res => res.blob())
+        .then(blob => {
+          const reader = new FileReader();
+          reader.onloadend = () => {
+            localStorage.setItem(`favicon:${hostname}`, reader.result);
+          };
+          reader.readAsDataURL(blob);
+        });
     }
-  };
-}
+  
+    // IndexedDB に保存
+    const transaction = db.transaction([storeName], "readwrite");
+    const store = transaction.objectStore(storeName);
+    store.add({
+      url,
+      title: title || hostname,
+      favicon
+    });
+    transaction.oncomplete = () => renderShortcuts();
+  }
+  
 
 function renderShortcuts() {
   const transaction = db.transaction([storeName], "readonly");
@@ -71,7 +66,7 @@ function renderShortcuts() {
       div.innerHTML = `
         <img class="favicon" src="${item.favicon}" alt="favicon">
         <a href="${item.url}" target="_blank" style="color:#90caf9">${item.title}</a>
-        <button onclick="deleteShortcut(${item.id})">❌</button>
+        <button onclick="deleteShortcut(${item.id})">☓</button>
       `;
       list.appendChild(div);
     });

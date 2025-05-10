@@ -17,6 +17,7 @@ div {
 .container {
   max-width: 800px;
   width: 100%;
+  align-items: center; 
   padding: 1em;
 }
 
@@ -58,8 +59,9 @@ button {
   border: 1px solid #333;
   border-radius: 8px;
   padding: 10px;
+  margin: auto;
   width: 240px;
-  text-align: left;
+  text-align: center;
   display: flex;
   align-items: center;
   gap: 10px;
