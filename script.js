@@ -28,7 +28,7 @@ function addShortcut() {
     // favicon 取得（キャッシュあり）
     let favicon = localStorage.getItem(`favicon:${hostname}`);
     if (!favicon) {
-      favicon = `https://www.google.com/s2/favicons?sz=64&domain=${hostname}`;
+      favicon = `https://icons.duckduckgo.com/ip3/${domain}.ico`;
       fetch(favicon)
         .then(res => res.blob())
         .then(blob => {
