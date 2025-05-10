@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>新しいタブ</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>HOME</h1>
+
+    <div class="search-box">
+      <input type="text" id="search" placeholder="Google検索...">
+      <button onclick="searchGoogle()">検索</button>
+    </div>
+
+    <div class="controls">
+      <input type="text" id="new-url" placeholder="URLを入力...">
+      <button onclick="addShortcut()">追加</button>
+      <br />
+      <button onclick="clearShortcuts()">クリア</button>
+      <button onclick="exportShortcuts()">⬇️ エクスポート</button>
+      <input type="file" id="import-file" accept=".json" onchange="importShortcuts(this)">
+    </div>
+
+    <h2>📌 ショートカット一覧</h2>
+    <div id="shortcuts" class="shortcut-list"></div>
+  </div>
+
+  <!-- 非表示iframeでタイトル取得用 -->
+  <iframe id="title-fetcher" style="display:none;"></iframe>
+
+  <script src="script.js"></script>
+</body>
+
+
+</html>
