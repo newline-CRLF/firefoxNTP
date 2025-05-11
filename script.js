@@ -120,3 +120,12 @@ function clearShortcuts() {
     transaction.oncomplete = () => renderShortcuts();
   }
 }
+document.getElementById("search").addEventListener("keydown", function(event) {
+  if (event.key === "Enter") {
+    const query = this.value.trim();
+    if (query) {
+      const searchUrl = `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+      window.open(searchUrl, "_blank"); // 新しいタブで開く（"_self"で同じタブ）
+    }
+  }
+});
